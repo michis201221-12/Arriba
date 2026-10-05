@@ -13,18 +13,21 @@ jobs:
     - name: Clonar código
       uses: actions/checkout@v4
 
-    - name: Configurar Java 17
+    - name: Configurar Java 11
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: '11'
         distribution: 'temurin'
         cache: gradle
 
     - name: Dar permisos de ejecución
       run: chmod +x gradlew
 
+    - name: Aceptar licencias del SDK
+      run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses
+
     - name: Compilar el APK con Gradle
-      run: ./gradlew assembleDebug
+      run: ./gradlew assembleDebug --stacktrace
 
     - name: Subir APK generado
       uses: actions/upload-artifact@v4
